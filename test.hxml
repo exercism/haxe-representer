@@ -1,0 +1,8 @@
+-x Runner
+-cp test
+-L tokentree
+-L haxeparser
+-L haxe-formatter
+-L json2object
+-L buddy
+-D buddy-colors

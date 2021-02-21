@@ -1,0 +1,7 @@
+-cp src
+-main representer.Representer
+-neko bin/representer.n
+-L tokentree
+-L haxeparser
+-L haxe-formatter
+-L json2object
