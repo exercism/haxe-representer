@@ -1,6 +1,6 @@
 package representer.normalizers;
 
-class IdentifierNormalizer extends NormalizerBase {
+class Identifiers extends NormalizerBase {
 	// mapping of identifiers to placeholders
 	public static var idMap(default, null) = new Map<String, String>();
 
@@ -25,8 +25,7 @@ class IdentifierNormalizer extends NormalizerBase {
 	static function mkPlaceholder(id:String):String {
 		if (!idMap.exists(id))
 			idMap[id] = 'PLACEHOLDER_${++idMapIdx}';
-		var placeholder = idMap[id];
-		return placeholder;
+		return idMap[id];
 	}
 
 	static function getPlaceholder(id:String):String

@@ -11,7 +11,7 @@ typedef NormFlags = {
 /*
  * Normalize flags by removing them
  */
-class FlagNormalizer extends NormalizerBase {
+class Flags extends NormalizerBase {
 	var flags:NormFlags;
 
 	public function new(flags:NormFlags) {

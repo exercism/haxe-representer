@@ -6,7 +6,7 @@ typedef Defs = Array<TypeDef>;
  * Normalize TypeDecls by re-ordering
  * This normalization removes decl.Pos data
  */
-class OrderNormalizer extends NormalizerBase {
+class DeclarationOrder extends NormalizerBase {
 	public function apply(data:ParseData) {
 		var enums = [];
 		var typedefs = [];
