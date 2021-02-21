@@ -1,0 +1,18 @@
+var boolProp(null, null) = !x;
+var boolVar = !x;
+
+function fun() {
+	var boolVar = !x;
+}
+
+var x = true;
+
+class PLACEHOLDER_1 {
+	var PLACEHOLDER_2 = !false;
+	var PLACEHOLDER_3 = !false;
+	var PLACEHOLDER_4(null, null) = !false;
+
+	function PLACEHOLDER_5() {
+		var boolVar = !false;
+	}
+}

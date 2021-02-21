@@ -8,14 +8,18 @@ import haxe.io.Path;
 import byte.ByteData;
 import sys.io.File;
 import representer.normalizers.Normalizer;
-import representer.normalizers.IdentifierNormalizer;
+import representer.normalizers.Identifiers;
 
 using Lambda;
 using haxe.macro.ExprTools;
 
 class Representer {
 	public static function main() {
-		represent("test", Path.directory(Sys.programPath()), "./");
+		var args = Sys.args();
+		var slug = args[0];
+		var inputDir = args[1];
+		var outputDir = args[2];
+		represent(slug, inputDir, outputDir);
 	}
 
 	public static function represent(slug:String, inputDir:String, outputDir:String) {
@@ -38,9 +42,9 @@ class Representer {
 
 		// apply normalizations
 		Normalizer.applyAll(data);
-		var printer = new Printer();
 
 		// convert ast back to src str
+		var printer = new Printer();
 		var normCode = data.decls.map(d -> {
 			var converted = DefinitionConverter.convertTypeDef(data.pack, d.decl);
 			printer.printTypeDefinition(converted);
@@ -48,14 +52,12 @@ class Representer {
 
 		// apply formatting to normalized source
 		normCode = formatCode(normCode);
-		trace(normCode);
 		// write representation
-		// File.saveContent(repDest, formatted);
+		File.saveContent(repDest, normCode);
 
 		// write mapping
-		var mapping = haxe.Json.stringify(IdentifierNormalizer.idMap);
-		// trace(mapping);
-		// File.saveContent(mapDest, mapping);
+		var mapping = haxe.Json.stringify(Identifiers.idMap, "\t");
+		File.saveContent(mapDest, mapping);
 	}
 
 	public static function formatCode(code:String):String {

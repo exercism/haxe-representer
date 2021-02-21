@@ -1,9 +1,3 @@
--x test.Runner
--cp test
--cp src
--lib tokentree
--lib haxeparser
--lib haxe-formatter
--lib json2object
 -lib buddy
--D buddy-colors
+build.hxml
+--cmd haxe -cp ./test -cp ./src -lib buddy -D buddy-colors --run test.Runner 
