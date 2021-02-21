@@ -7,14 +7,10 @@ class BraceNormalizer extends NormalizerBase {
 	public function apply(data:ParseData) {
 		for (d in data.decls) {
 			switch (d.decl) {
-				case EImport(sl, mode):
 				case EClass(d):
 					normalizeClass(d);
-				case EEnum(d):
-				case ETypedef(d):
-				case EAbstract(a):
 				case EStatic(d):
-				case EUsing(path):
+				case _:
 			}
 		}
 	}
@@ -30,20 +26,29 @@ class BraceNormalizer extends NormalizerBase {
 	}
 
 	function normalizeExpr(e:Expr) {
+		if (e == null)
+			return;
 		function addBrace(x) {
-			switch (x.expr) {
+			return switch (x.expr) {
 				case EBlock(_):
+					x;
 				case _:
-					// e.expr = macro {$x;}
+					macro {$x;}
 			}
 		}
 		switch (e.expr) {
-			case EFor(it, expr):
-				expr.iter(addBrace);
+			case EFor(it, efor):
+				efor = addBrace(efor);
+				e.expr = EFor(it, efor);
+				efor.iter(normalizeExpr);
 			case EIf(econd, eif, eelse):
-				eif.iter(addBrace);
-			case EWhile(econd, e, normalWhile):
-				e.iter(addBrace);
+				eif = addBrace(eif);
+				e.expr = EIf(econd, eif, eelse);
+				eif.iter(normalizeExpr);
+			case EWhile(econd, ewhile, normalWhile):
+				ewhile = addBrace(ewhile);
+				e.expr = EWhile(econd, ewhile, normalWhile);
+				ewhile.iter(normalizeExpr);
 			case _:
 		}
 	}
