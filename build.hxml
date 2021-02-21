@@ -1,7 +1,7 @@
 -cp src
 -main representer.Representer
 -neko bin/representer.n
--L tokentree
--L haxeparser
--L haxe-formatter
--L json2object
+-lib tokentree
+-lib haxeparser
+-lib haxe-formatter
+-lib json2object

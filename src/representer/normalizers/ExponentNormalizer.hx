@@ -14,7 +14,6 @@ class ExponentNormalizer extends NormalizerBase {
 		switch (e.expr) {
 			case EConst(CFloat(f)):
 				var pat = ~/\de\d/i;
-				trace(f);
 				if (pat.match(f))
 					e.expr = EConst(CFloat(f.toUpperCase()));
 			case _:

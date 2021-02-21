@@ -1,8 +1,9 @@
--x Runner
+-x test.Runner
 -cp test
--L tokentree
--L haxeparser
--L haxe-formatter
--L json2object
--L buddy
+-cp src
+-lib tokentree
+-lib haxeparser
+-lib haxe-formatter
+-lib json2object
+-lib buddy
 -D buddy-colors

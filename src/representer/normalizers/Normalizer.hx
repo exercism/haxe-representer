@@ -10,10 +10,10 @@ class Normalizer {
 		new DebugNormalizer(),
 		new ImportNormalizer(),
 		new UsingNormalizer(),
+		new BraceNormalizer(),
 		new OrderNormalizer(),
 		new IdentifierNormalizer(),
 		new BoolNormalizer(),
-		new BraceNormalizer(),
 		new ExponentNormalizer(),
 		new FlagNormalizer({
 			classF: [HFinal, HPrivate],
@@ -27,6 +27,11 @@ class Normalizer {
 			normalizer.apply(data);
 	}
 
+	/*
+	 * Walks the AST collecting and returning a list of exprs. 
+	 * This is useful for normalizers that operate on Expr 
+	 * and don't require matching specific TypeDefs.
+	 */
 	public static function collectExpr(data:ParseData):Array<Expr> {
 		var exprs = [];
 		function collExpr(e:Expr) {
@@ -37,7 +42,6 @@ class Normalizer {
 		}
 		for (d in data.decls) {
 			switch (d.decl) {
-				case EImport(sl, mode):
 				case EClass(d):
 					for (f in d.data)
 						switch (f.kind) {
@@ -48,9 +52,6 @@ class Normalizer {
 							case FProp(get, set, t, e):
 								collExpr(e);
 						}
-				case EEnum(d):
-				case ETypedef(d):
-				case EAbstract(a):
 				case EStatic(s):
 					switch (s.data) {
 						case FVar(t, e):
@@ -60,7 +61,7 @@ class Normalizer {
 						case FProp(get, set, t, e):
 							collExpr(e);
 					}
-				case EUsing(path):
+				case _:
 			}
 		}
 		return exprs;
