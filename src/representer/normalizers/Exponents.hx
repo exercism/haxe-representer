@@ -13,7 +13,7 @@ class Exponents extends NormalizerBase {
 			return;
 		switch (e.expr) {
 			case EConst(CFloat(f)):
-				var pat = ~/\de\d/i;
+				var pat = ~/\de-?\d/;
 				if (pat.match(f))
 					e.expr = EConst(CFloat(f.toUpperCase()));
 			case _:
