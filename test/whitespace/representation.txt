@@ -1,0 +1,6 @@
+var PLACEHOLDER_1 = 1;
+var PLACEHOLDER_2 = 1;
+
+class PLACEHOLDER_3 {
+	function PLACEHOLDER_4(PLACEHOLDER_5:Int):Void {}
+}
