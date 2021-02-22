@@ -20,25 +20,24 @@ class Runner extends buddy.SingleSuite {
 		var representerBin = Path.join([scriptDir, "..", "bin", "representer.n"]);
 
 		for (testDir in collectTestDirs(scriptDir)) {
-			var expectMap = Json.parse(File.getContent('$testDir/mapping.json'));
-			var expectRep = File.getContent('$testDir/representation.txt');
 			var tmpDir = '$testDir/tmp';
-			tmpDirs.push(tmpDir);
 			FS.createDirectory(tmpDir);
+			tmpDirs.push(tmpDir);
 
 			var proc = new Process("neko", [representerBin, "sut", testDir, tmpDir]);
 			if (proc.exitCode() != 0)
 				trace(proc.stderr.readAll().toString());
 
-			// use path starting from test dir as test name
 			// e.g. path/to/test/identifiers/class -> identifiers/class
 			var testName = testDir.substring(testDir.indexOf("/test/") + 6);
 			describe(testName, {
 				it("representation should match expected", {
+					var expectRep = File.getContent('$testDir/representation.txt');
 					var outRep = File.getContent('$tmpDir/representation.txt');
 					outRep.should.be(expectRep);
 				});
 				it("mapping should match expected", {
+					var expectMap = Json.parse(File.getContent('$testDir/mapping.json'));
 					var outMap = Json.parse(File.getContent('$tmpDir/mapping.json'));
 					// convert back to str for comparison
 					Json.stringify(outMap).should.be(Json.stringify(expectMap));
@@ -53,7 +52,8 @@ class Runner extends buddy.SingleSuite {
 		}
 	}
 
-	// traverse scriptDir recursively and return a list of all dirs containing a test
+	// Traverse scriptDir recursively and return a list of all dirs containing a test,
+	// this allows arbitrary nesting
 	static function collectTestDirs(path:String):Array<String> {
 		function filterDirs(p)
 			return FS.readDirectory(p).map(x -> Path.join([p, x])).filter(FS.isDirectory);

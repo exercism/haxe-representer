@@ -35,6 +35,13 @@ class Identifiers extends NormalizerBase {
 
 	function normalizeClass(def:Definition<ClassFlag, Array<Field>>) {
 		def.name = mkPlaceholder(def.name);
+		for (flag in def.flags) {
+			switch (flag) {
+				case HExtends(t):
+					t.name = mkPlaceholder(t.name);
+				case _:
+			}
+		}
 		for (field in def.data)
 			normalizeField(field);
 	}

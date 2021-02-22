@@ -1,0 +1,2 @@
+class PLACEHOLDER_1 {}
+class PLACEHOLDER_2 extends PLACEHOLDER_1 {}
