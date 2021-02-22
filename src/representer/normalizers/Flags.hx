@@ -1,7 +1,5 @@
 package representer.normalizers;
 
-import haxe.EnumFlags;
-
 typedef NormFlags = {
 	classF:Array<ClassFlag>,
 	staticF:Array<StaticFlag>,
@@ -38,9 +36,5 @@ class Flags extends NormalizerBase {
 
 	function normalizeStatic(s:Definition<StaticFlag, FieldType>) {
 		flags.staticF.iter(sf -> s.flags.remove(sf));
-		// switch (s.data) {
-		// 	case FVar(t, e):
-		// 	case _:
-		// }
 	}
 }
