@@ -10,19 +10,31 @@ class Braces extends NormalizerBase {
 				case EClass(d):
 					normalizeClass(d);
 				case EStatic(d):
+					normalizeStatic(d);
 				case _:
 			}
 		}
 	}
 
 	function normalizeClass(d:Definition<ClassFlag, Array<Field>>) {
-		for (field in d.data) {
-			switch (field.kind) {
-				case FFun(f):
-					f.expr.iter(normalizeExpr);
-				case _:
-			}
+		d.data.iter(f -> normalizeTypeField(f.kind));
+	}
+
+	function normalizeTypeField(ft:FieldType) {
+		switch (ft) {
+			case FFun(f):
+				f.expr.iter(normalizeExpr);
+			case FVar(_, varExpr):
+				normalizeExpr(varExpr);
+				varExpr.iter(normalizeExpr);
+			case FProp(_, _, _, propExpr):
+				normalizeExpr(propExpr);
+				propExpr.iter(normalizeExpr);
 		}
+	}
+
+	function normalizeStatic(d:Definition<StaticFlag, FieldType>) {
+		normalizeTypeField(d.data);
 	}
 
 	function normalizeExpr(e:Expr) {
