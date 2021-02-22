@@ -58,7 +58,6 @@ class Identifiers extends NormalizerBase {
 				varExpr.iter(normalizeExpr);
 			case FFun(fun):
 				fun.args.iter(arg -> arg.name = mkPlaceholder(arg.name));
-				// fun.params.iter(param -> param.name = mkPlaceholder(param.name));
 				fun.expr.iter(normalizeExpr);
 			case FProp(_, _, _, propExpr):
 				if (propExpr != null) {
@@ -107,10 +106,18 @@ class Identifiers extends NormalizerBase {
 				e.expr = EConst(CIdent(getPlaceholder(ident)));
 			// interpolated identifier
 			case EConst(CString(s, SingleQuotes)):
-				var ident = ~/\$([a-zA-Z0-9_]+)/g;
-				if (ident.match(s)) {
-					s = ident.map(s, m -> getPlaceholder(m.matched(1)));
+				var ident1 = ~/\$([a-zA-Z0-9_]+)/g;
+				if (ident1.match(s)) {
+					s = ident1.map(s, m -> getPlaceholder(m.matched(1)));
 					e.expr = EConst(CString(s, SingleQuotes));
+					return;
+				}
+				var ident2 = ~/\$\{(.*?)}/g;
+				if (ident2.match(s)) {
+					var pat = ~/(([a-zA-Z0-9_]+).*?)/g;
+					s = pat.map(s, m -> getPlaceholder(m.matched(2)));
+					e.expr = EConst(CString(s, SingleQuotes));
+					return;
 				}
 			case EVars(vars):
 				for (v in vars) {
