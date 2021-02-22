@@ -2,7 +2,7 @@ var PLACEHOLDER_1 = 1;
 function PLACEHOLDER_2() {}
 
 class PLACEHOLDER_3 {
-	var PLACEHOLDER_1 = 1;
+	static var PLACEHOLDER_1 = 1;
 
-	function PLACEHOLDER_4() {}
+	static function PLACEHOLDER_4() {}
 }

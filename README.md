@@ -10,12 +10,12 @@ Currently the following is normalized by the representer:
 - [x] Whitespace
 - [x] Braces
 - [x] Exponents
-- [x] Static, final, inline flags
-- [x] Identifiers (var, static var, properties, enums, typedefs)
+- [x] Static, final, inline keywords
+- [x] Identifiers (classes, members, enums, typedefs)
 - [x] Booleans
 - [x] Import statements
 - [x] Using statements
-- [x] Declaration order of vars, functions, enums, typedefs and their sub-expressions
+- [x] Declaration order of vars, functions, enums, typedefs
 
 
 ## Design
