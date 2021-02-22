@@ -17,7 +17,7 @@ class Normalizer {
 		new Flags({
 			classF: [HFinal, HPrivate],
 			staticF: [SFinal, SInline, SPrivate],
-			accessF: [AFinal, AInline, APrivate, APublic, AStatic]
+			accessF: [AFinal, AInline, APrivate, APublic]
 		}),
 	];
 

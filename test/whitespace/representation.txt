@@ -2,5 +2,5 @@ var PLACEHOLDER_1 = 1;
 var PLACEHOLDER_2 = 1;
 
 class PLACEHOLDER_3 {
-	public static function PLACEHOLDER_4(PLACEHOLDER_5:Int):Void {}
+	static function PLACEHOLDER_4(PLACEHOLDER_5:Int):Void {}
 }
