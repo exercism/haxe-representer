@@ -1,17 +1,9 @@
 package representer;
 
-import formatter.Formatter;
-import formatter.Formatter.FormatterInput;
-import haxeparser.DefinitionConverter;
-import haxe.macro.Printer;
 import haxe.io.Path;
-import byte.ByteData;
 import sys.io.File;
 import representer.normalizers.Normalizer;
 import representer.normalizers.Identifiers;
-
-using Lambda;
-using haxe.macro.ExprTools;
 
 class Representer {
 	public static function main() {
@@ -29,31 +21,29 @@ class Representer {
 		var className = slug.split("-").map(capitalize).join("");
 		var repDest = Path.join([outputDir, "representation.txt"]);
 		var mapDest = Path.join([outputDir, "mapping.json"]);
-
 		var codeSrc = Path.join([inputDir, '$className.hx']);
 
-		// apply formatting to original source
+		// apply code formatting
 		var origCode = File.getContent(codeSrc);
 		origCode = formatCode(origCode);
 
-		// convert src str to ast
-		var parser = new HaxeParser(ByteData.ofString(origCode), Path.withoutDirectory(codeSrc));
+		// convert src to ast
+		var parser = new HaxeParser(byte.ByteData.ofString(origCode), Path.withoutDirectory(codeSrc));
 		var data = parser.parse();
 
 		// apply normalizations
 		Normalizer.applyAll(data);
 
-		// convert ast back to src str
-		var printer = new Printer();
-		var normCode = data.decls.map(d -> {
-			var converted = DefinitionConverter.convertTypeDef(data.pack, d.decl);
+		// convert ast back to str
+		var printer = new haxe.macro.Printer();
+		var representation = data.decls.map(d -> {
+			var converted = haxeparser.DefinitionConverter.convertTypeDef(data.pack, d.decl);
 			printer.printTypeDefinition(converted);
 		}).join("\n");
 
-		// apply formatting to normalized source
-		normCode = formatCode(normCode);
 		// write representation
-		File.saveContent(repDest, normCode);
+		representation = formatCode(representation);
+		File.saveContent(repDest, representation);
 
 		// write mapping
 		var mapping = haxe.Json.stringify(Identifiers.idMap, "\t");
@@ -61,12 +51,12 @@ class Representer {
 	}
 
 	public static function formatCode(code:String):String {
-		var formatterInput = FormatterInput.Code(code);
-		return switch (Formatter.format(formatterInput)) {
-			case Success(formattedCode):
-				formattedCode;
-			case Failure(errorMessage):
-				throw 'Error formatting code: $errorMessage';
+		var input = formatter.Formatter.FormatterInput.Code(code);
+		return switch (formatter.Formatter.format(input)) {
+			case Success(formatted):
+				formatted;
+			case Failure(msg):
+				throw 'Error formatting code: $msg';
 			case Disabled:
 				throw 'Error formatting code: disabled';
 		}
