@@ -3,3 +3,5 @@ enum E {
 	b;
 	c;
 }
+
+var x = E.a;

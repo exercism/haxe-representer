@@ -54,15 +54,17 @@ class Identifiers extends NormalizerBase {
 	function normalizeFieldType(ft:FieldType) {
 		switch (ft) {
 			case FVar(_, varExpr):
+				normalizeExpr(varExpr);
 				varExpr.iter(normalizeExpr);
 			case FFun(fun):
 				fun.args.iter(arg -> arg.name = mkPlaceholder(arg.name));
 				// fun.params.iter(param -> param.name = mkPlaceholder(param.name));
-				fun.expr.iter(e -> trace(e));
 				fun.expr.iter(normalizeExpr);
-			case FProp(get, set, t, propExpr):
-				if (propExpr != null)
+			case FProp(_, _, _, propExpr):
+				if (propExpr != null) {
+					normalizeExpr(propExpr);
 					propExpr.iter(normalizeExpr);
+				}
 		}
 	}
 
@@ -72,7 +74,6 @@ class Identifiers extends NormalizerBase {
 	}
 
 	function normalizeTypeDef(d:Definition<EnumFlag, ComplexType>) {
-		trace(d);
 		d.name = mkPlaceholder(d.name);
 		normalizeComplextType(d.data);
 	}
@@ -81,14 +82,14 @@ class Identifiers extends NormalizerBase {
 		switch (ct) {
 			case TPath(p):
 				p.name = mkPlaceholder(p.name);
-			case TFunction(args, ret):
+			case TFunction(_, _):
 			case TAnonymous(fields):
 				fields.iter(f -> f.name = mkPlaceholder(f.name));
-			case TParent(t):
-			case TExtend(p, fields):
-			case TOptional(t):
-			case TNamed(n, t):
-			case TIntersection(tl):
+			case TParent(_):
+			case TExtend(_, _):
+			case TOptional(_):
+			case TNamed(_, _):
+			case TIntersection(_):
 		}
 	}
 
@@ -101,8 +102,10 @@ class Identifiers extends NormalizerBase {
 		if (e == null)
 			return;
 		switch (e.expr) {
+			// identifier
 			case EConst(CIdent(ident)):
 				e.expr = EConst(CIdent(getPlaceholder(ident)));
+			// interpolated identifier
 			case EConst(CString(s, SingleQuotes)):
 				var ident = ~/\$([a-zA-Z0-9_]+)/g;
 				if (ident.match(s)) {
@@ -114,6 +117,8 @@ class Identifiers extends NormalizerBase {
 					v.name = mkPlaceholder(v.name);
 					v.expr.iter(normalizeExpr);
 				}
+			case EField(fieldExpr, field):
+				e.expr = EField(fieldExpr, mkPlaceholder(field));
 			case _:
 				e.iter(normalizeExpr);
 		}
