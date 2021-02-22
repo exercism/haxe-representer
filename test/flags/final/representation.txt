@@ -1,0 +1,5 @@
+class PLACEHOLDER_1 {
+	function PLACEHOLDER_2() {}
+
+	var PLACEHOLDER_3 = 1;
+}

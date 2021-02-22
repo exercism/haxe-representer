@@ -14,7 +14,7 @@ class Representer {
 		represent(slug, inputDir, outputDir);
 	}
 
-	public static function represent(slug:String, inputDir:String, outputDir:String) {
+	static function represent(slug:String, inputDir:String, outputDir:String) {
 		function capitalize(str:String)
 			return str.charAt(0).toUpperCase() + str.substr(1);
 
@@ -50,7 +50,7 @@ class Representer {
 		File.saveContent(mapDest, mapping);
 	}
 
-	public static function formatCode(code:String):String {
+	static function formatCode(code:String):String {
 		var input = formatter.Formatter.FormatterInput.Code(code);
 		return switch (formatter.Formatter.format(input)) {
 			case Success(formatted):
