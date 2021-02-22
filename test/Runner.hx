@@ -24,12 +24,20 @@ class Runner extends buddy.SingleSuite {
 			FS.createDirectory(tmpDir);
 			tmpDirs.push(tmpDir);
 
+			// run representer
 			var proc = new Process("neko", [representerBin, "sut", testDir, tmpDir]);
-			if (proc.exitCode() != 0)
-				trace(proc.stderr.readAll().toString());
+
+			// for debugging
+			var stdout = proc.stdout.readAll().toString();
+			if (stdout.length > 0)
+				trace(stdout);
+			var stderr = proc.stderr.readAll().toString();
+			if (stderr.length > 0)
+				trace(stderr);
 
 			// e.g. path/to/test/identifiers/class -> identifiers/class
 			var testName = testDir.substring(testDir.indexOf("/test/") + 6);
+
 			describe(testName, {
 				it("representation should match expected", {
 					var expectRep = File.getContent('$testDir/representation.txt');

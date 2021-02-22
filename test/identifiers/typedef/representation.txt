@@ -1,0 +1,7 @@
+typedef PLACEHOLDER_1 = {
+	var PLACEHOLDER_2:Int;
+	var PLACEHOLDER_3:String;
+	var PLACEHOLDER_4:String;
+};
+
+typedef PLACEHOLDER_5 = PLACEHOLDER_1;

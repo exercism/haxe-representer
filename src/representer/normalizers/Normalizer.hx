@@ -10,7 +10,7 @@ class Normalizer {
 		new Imports(),
 		new Usings(),
 		new Braces(),
-		new DeclarationOrder(),
+		// new DeclarationOrder(),
 		new Identifiers(),
 		new Bools(),
 		new Exponents(),

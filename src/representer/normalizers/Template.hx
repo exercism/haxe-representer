@@ -39,7 +39,22 @@ class Template extends NormalizerBase {
 
 	function normalizeEnum(d:Definition<EnumFlag, Array<EnumConstructor>>) {}
 
-	function normalizeTypedef(d:Definition<EnumFlag, ComplexType>) {}
+	function normalizeTypedef(d:Definition<EnumFlag, ComplexType>) {
+		normalizeComplextType(d.data);
+	}
+
+	function normalizeComplextType(ctyp:ComplexType) {
+		switch (ctyp) {
+			case TPath(p):
+			case TFunction(args, ret):
+			case TAnonymous(fields):
+			case TParent(t):
+			case TExtend(p, fields):
+			case TOptional(t):
+			case TNamed(n, t):
+			case TIntersection(tl):
+		}
+	}
 
 	function normalizeAbstract(d:Definition<AbstractFlag, Array<Field>>) {
 		for (field in d.data) {

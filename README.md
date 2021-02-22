@@ -11,11 +11,11 @@ Currently the following is normalized by the representer:
 - [x] Braces
 - [x] Exponents
 - [x] Static, final, inline flags
-- [x] Identifiers
+- [x] Identifiers (var, static var, properties, enums, typedefs)
 - [x] Booleans
 - [x] Import statements
 - [x] Using statements
-- [x] Declaration order of vars, functions, enums, typedefs and their sub-parts
+- [x] Declaration order of vars, functions, enums, typedefs and their sub-expressions
 
 
 ## Design

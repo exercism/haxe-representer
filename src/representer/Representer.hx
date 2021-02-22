@@ -19,12 +19,6 @@ class Representer {
 		var slug = args[0];
 		var inputDir = args[1];
 		var outputDir = args[2];
-		// debugging
-		// {
-		// 	slug = "sut";
-		// 	inputDir = "D:/source/haxe/haxe-representer/test/identifiers";
-		// 	outputDir = "D:/source/haxe/haxe-representer/test/identifiers/tmp";
-		// }
 		represent(slug, inputDir, outputDir);
 	}
 

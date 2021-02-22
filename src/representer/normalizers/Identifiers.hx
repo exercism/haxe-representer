@@ -72,7 +72,24 @@ class Identifiers extends NormalizerBase {
 	}
 
 	function normalizeTypeDef(d:Definition<EnumFlag, ComplexType>) {
+		trace(d);
 		d.name = mkPlaceholder(d.name);
+		normalizeComplextType(d.data);
+	}
+
+	function normalizeComplextType(ct:ComplexType) {
+		switch (ct) {
+			case TPath(p):
+				p.name = mkPlaceholder(p.name);
+			case TFunction(args, ret):
+			case TAnonymous(fields):
+				fields.iter(f -> f.name = mkPlaceholder(f.name));
+			case TParent(t):
+			case TExtend(p, fields):
+			case TOptional(t):
+			case TNamed(n, t):
+			case TIntersection(tl):
+		}
 	}
 
 	function nomalizeStatic(d:Definition<StaticFlag, FieldType>) {
