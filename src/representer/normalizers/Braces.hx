@@ -28,6 +28,7 @@ class Braces extends NormalizerBase {
 	function normalizeExpr(e:Expr) {
 		if (e == null)
 			return;
+		// TODO: figure out why this is adding a semicolon to the end of each block
 		function addBrace(x) {
 			return switch (x.expr) {
 				case EBlock(_):
