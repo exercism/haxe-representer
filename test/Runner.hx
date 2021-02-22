@@ -11,16 +11,15 @@ using StringTools;
 using Lambda;
 
 class Runner extends buddy.SingleSuite {
+	// dirs where representer output is written to, cleaned at end of suite run
 	var tmpDirs = [];
 
+	static var scriptDir = Path.directory(Sys.programPath());
+
 	public function new() {
-		var scriptDir = Path.directory(Sys.programPath());
 		var representerBin = Path.join([scriptDir, "..", "bin", "representer.n"]);
 
-		function filterDirs(path)
-			return FS.readDirectory(path).map(x -> Path.join([path, x])).filter(FS.isDirectory);
-
-		for (testDir in filterDirs(scriptDir)) {
+		for (testDir in collectTestDirs(scriptDir)) {
 			var expectMap = Json.parse(File.getContent('$testDir/mapping.json'));
 			var expectRep = File.getContent('$testDir/representation.txt');
 			var tmpDir = '$testDir/tmp';
@@ -31,7 +30,9 @@ class Runner extends buddy.SingleSuite {
 			if (proc.exitCode() != 0)
 				trace(proc.stderr.readAll().toString());
 
-			var testName = Path.withoutDirectory(testDir);
+			// use path starting from test dir as test name
+			// e.g. path/to/test/identifiers/class -> identifiers/class
+			var testName = testDir.substring(testDir.indexOf("/test/") + 6);
 			describe(testName, {
 				it("representation should match expected", {
 					var outRep = File.getContent('$tmpDir/representation.txt');
@@ -44,11 +45,31 @@ class Runner extends buddy.SingleSuite {
 				});
 			});
 
+			// clean up
 			afterAll({
 				for (dir in tmpDirs)
 					deleteDirRecursively(dir);
 			});
 		}
+	}
+
+	// traverse scriptDir recursively and return a list of all dirs containing a test
+	static function collectTestDirs(path:String):Array<String> {
+		function filterDirs(p)
+			return FS.readDirectory(p).map(x -> Path.join([p, x])).filter(FS.isDirectory);
+
+		var testDirs = [];
+
+		if (FS.exists('$path/Sut.hx'))
+			return [path];
+
+		for (dir in filterDirs(path)) {
+			if (FS.exists('$dir/Sut.hx'))
+				testDirs.push(dir);
+			else
+				testDirs = testDirs.concat(filterDirs(dir).flatMap(collectTestDirs));
+		}
+		return testDirs;
 	}
 
 	static function deleteDirRecursively(path:String) {

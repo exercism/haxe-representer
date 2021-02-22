@@ -1,0 +1,5 @@
+var PLACEHOLDER_1(null, null) = 1;
+
+class PLACEHOLDER_2 {
+	var PLACEHOLDER_3(null, null) = 1;
+}

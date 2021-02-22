@@ -1,0 +1,9 @@
+function PLACEHOLDER_1() {
+	var PLACEHOLDER_2 = 1;
+}
+
+var PLACEHOLDER_3 = 1;
+
+class PLACEHOLDER_4 {
+	var PLACEHOLDER_5 = 1;
+}
