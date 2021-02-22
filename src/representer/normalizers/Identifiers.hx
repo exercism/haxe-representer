@@ -22,12 +22,14 @@ class Identifiers extends NormalizerBase {
 		}
 	}
 
+	// retrieves placeholder, creating new one if not found
 	static function mkPlaceholder(id:String):String {
 		if (!idMap.exists(id))
 			idMap[id] = 'PLACEHOLDER_${++idMapIdx}';
 		return idMap[id];
 	}
 
+	// retrieves placeholder, returning identity if not found
 	static function getPlaceholder(id:String):String
 		return idMap.exists(id) ? idMap[id] : id;
 
@@ -39,24 +41,37 @@ class Identifiers extends NormalizerBase {
 
 	function normalizeField(f:Field) {
 		f.name = mkPlaceholder(f.name);
-		switch (f.kind) {
-			case FVar(_, e):
-				e.iter(normalizeExpr);
-			case FFun(f):
-				f.args.iter(p -> p.name = mkPlaceholder(p.name));
-				f.params.iter(p -> p.name = mkPlaceholder(p.name));
-				f.expr.iter(normalizeExpr);
-			case FProp(get, set, t, e):
-				if (e != null)
-					e.iter(normalizeExpr);
+		normalizeFieldType(f.kind);
+	}
+
+	function normalizeFieldType(ft:FieldType) {
+		switch (ft) {
+			case FVar(_, varExpr):
+				varExpr.iter(normalizeExpr);
+			case FFun(fun):
+				fun.args.iter(arg -> arg.name = mkPlaceholder(arg.name));
+				// fun.params.iter(param -> param.name = mkPlaceholder(param.name));
+				fun.expr.iter(e -> trace(e));
+				fun.expr.iter(normalizeExpr);
+			case FProp(get, set, t, propExpr):
+				if (propExpr != null)
+					propExpr.iter(normalizeExpr);
 		}
 	}
 
-	function normalizeEnum(d:Definition<EnumFlag, Array<EnumConstructor>>) {}
+	function normalizeEnum(d:Definition<EnumFlag, Array<EnumConstructor>>) {
+		d.name = mkPlaceholder(d.name);
+		d.data.iter(construct -> construct.name = mkPlaceholder(construct.name));
+	}
 
-	function normalizeTypeDef(d:Definition<EnumFlag, ComplexType>) {}
+	function normalizeTypeDef(d:Definition<EnumFlag, ComplexType>) {
+		d.name = mkPlaceholder(d.name);
+	}
 
-	function nomalizeStatic(d:Definition<StaticFlag, FieldType>) {}
+	function nomalizeStatic(d:Definition<StaticFlag, FieldType>) {
+		d.name = mkPlaceholder(d.name);
+		normalizeFieldType(d.data);
+	}
 
 	function normalizeExpr(e:Expr) {
 		if (e == null)
@@ -66,9 +81,15 @@ class Identifiers extends NormalizerBase {
 				e.expr = EConst(CIdent(getPlaceholder(ident)));
 			case EConst(CString(s, SingleQuotes)):
 				var ident = ~/\$([a-zA-Z0-9_]+)/g;
-				if (ident.match(s))
+				if (ident.match(s)) {
 					s = ident.map(s, m -> getPlaceholder(m.matched(1)));
-				e.expr = EConst(CString(s, SingleQuotes));
+					e.expr = EConst(CString(s, SingleQuotes));
+				}
+			case EVars(vars):
+				for (v in vars) {
+					v.name = mkPlaceholder(v.name);
+					v.expr.iter(normalizeExpr);
+				}
 			case _:
 				e.iter(normalizeExpr);
 		}

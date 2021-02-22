@@ -27,7 +27,7 @@ class Runner extends buddy.SingleSuite {
 			tmpDirs.push(tmpDir);
 			FS.createDirectory(tmpDir);
 
-			var proc = new Process("neko", [representerBin, "it", testDir, tmpDir]);
+			var proc = new Process("neko", [representerBin, "sut", testDir, tmpDir]);
 			if (proc.exitCode() != 0)
 				trace(proc.stderr.readAll().toString());
 
@@ -39,13 +39,14 @@ class Runner extends buddy.SingleSuite {
 				});
 				it("mapping should match expected", {
 					var outMap = Json.parse(File.getContent('$tmpDir/mapping.json'));
-					outMap.should.be(expectMap);
+					// convert back to str for comparison
+					Json.stringify(outMap).should.be(Json.stringify(expectMap));
 				});
 			});
 
 			afterAll({
-				// for (dir in tmpDirs)
-				// 	deleteDirRecursively(dir);
+				for (dir in tmpDirs)
+					deleteDirRecursively(dir);
 			});
 		}
 	}
