@@ -12,13 +12,13 @@ class Bools extends NormalizerBase {
 		if (e == null)
 			return;
 		switch (e) {
-			case(macro true == $x):
+			case macro true == $x:
 				e.expr = x.expr;
-			case(macro $x == true):
+			case macro $x == true:
 				e.expr = x.expr;
-			case(macro false == $x):
+			case macro false == $x:
 				e.expr = EUnop(OpNot, false, x);
-			case(macro $x == false):
+			case macro $x == false:
 				e.expr = EUnop(OpNot, false, x);
 			case _:
 				e.iter(normalizeExpr);
