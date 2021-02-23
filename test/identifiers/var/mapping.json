@@ -1,7 +1,7 @@
 {
-	"cvar": "PLACEHOLDER_5",
-	"sfun": "PLACEHOLDER_2",
-	"svar": "PLACEHOLDER_1",
-	"sfvar": "PLACEHOLDER_3",
-	"Sut": "PLACEHOLDER_4"
+	"avar": "PLACEHOLDER_1",
+	"Sut": "PLACEHOLDER_5",
+	"arr": "PLACEHOLDER_2",
+	"fun": "PLACEHOLDER_4",
+	"map": "PLACEHOLDER_3"
 }
