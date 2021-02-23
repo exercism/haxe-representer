@@ -1,9 +1,11 @@
-var svar = 1;
+var avar = 1;
+var arr = [avar];
+var map = {x: avar};
 
-function sfun() {
-	var sfvar = 1;
+function fun() {
+	var avar = 1;
 }
 
 class Sut {
-	var cvar = 1;
+	var avar = 1;
 }

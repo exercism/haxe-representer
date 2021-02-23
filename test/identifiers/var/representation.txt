@@ -1,9 +1,11 @@
 var PLACEHOLDER_1 = 1;
+var PLACEHOLDER_2 = [PLACEHOLDER_1];
+var PLACEHOLDER_3 = {x: PLACEHOLDER_1};
 
-function PLACEHOLDER_2() {
-	var PLACEHOLDER_3 = 1;
+function PLACEHOLDER_4() {
+	var PLACEHOLDER_1 = 1;
 }
 
-class PLACEHOLDER_4 {
-	var PLACEHOLDER_5 = 1;
+class PLACEHOLDER_5 {
+	var PLACEHOLDER_1 = 1;
 }
