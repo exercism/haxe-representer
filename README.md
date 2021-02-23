@@ -10,7 +10,7 @@ Currently the following is normalized by the representer:
 - [x] Whitespace
 - [x] Braces
 - [x] Exponents
-- [x] Static, final, inline keywords
+- [x] Keywords (final, inline, public, private)
 - [x] Identifiers (classes, members, enums, typedefs)
 - [x] Booleans
 - [x] Import statements
