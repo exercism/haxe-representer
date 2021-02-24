@@ -3,7 +3,7 @@ package representer.normalizers;
 /*
  * Normalize braces
  */
-class Braces extends NormalizerBase {
+class BraceNormalizer extends NormalizerBase {
 	public function apply(data:ParseData) {
 		for (d in data.decls) {
 			switch (d.decl) {

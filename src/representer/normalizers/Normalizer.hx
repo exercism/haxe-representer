@@ -7,14 +7,14 @@ typedef ParseData = {
 
 class Normalizer {
 	static var normalizers = [
-		new Imports(),
-		new Usings(),
-		new Braces(),
+		new ImportNormalizer(),
+		new UsingNormalizer(),
+		new BraceNormalizer(),
 		// new DeclarationOrder(),
-		new Identifiers(),
-		new Bools(),
-		new Exponents(),
-		new Flags({
+		new IdentifierNormalizer(),
+		new BoolNormalizer(),
+		new ExponentNormalizer(),
+		new FlagNormalizer({
 			classF: [HFinal, HPrivate],
 			staticF: [SFinal, SInline, SPrivate],
 			accessF: [AFinal, AInline, APrivate, APublic]

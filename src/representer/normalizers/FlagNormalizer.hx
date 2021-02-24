@@ -9,7 +9,7 @@ typedef NormFlags = {
 /*
  * Normalize flags by removing them
  */
-class Flags extends NormalizerBase {
+class FlagNormalizer extends NormalizerBase {
 	var flags:NormFlags;
 
 	public function new(flags:NormFlags) {

@@ -3,7 +3,7 @@ package representer.normalizers;
 /*
  * Normalize boolean expressions
  */
-class Bools extends NormalizerBase {
+class BoolNormalizer extends NormalizerBase {
 	public function apply(data:ParseData) {
 		Normalizer.collectExpr(data).iter(normalizeExpr);
 	}

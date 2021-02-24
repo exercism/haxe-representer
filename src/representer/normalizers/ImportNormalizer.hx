@@ -3,7 +3,7 @@ package representer.normalizers;
 /*
  * Normalize import statements by removing them
  */
-class Imports extends NormalizerBase {
+class ImportNormalizer extends NormalizerBase {
 	public function apply(data:ParseData) {
 		var rm = [];
 		for (d in data.decls) {

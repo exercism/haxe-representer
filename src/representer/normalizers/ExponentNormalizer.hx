@@ -3,7 +3,7 @@ package representer.normalizers;
 /*
  * Normalize exponent expressions (e.g. converts 14e32 -> 14E32)
  */
-class Exponents extends NormalizerBase {
+class ExponentNormalizer extends NormalizerBase {
 	public function apply(data:ParseData) {
 		Normalizer.collectExpr(data).iter(normalizeExpr);
 	}

@@ -1,6 +1,6 @@
 package representer.normalizers;
 
-class Identifiers extends NormalizerBase {
+class IdentifierNormalizer extends NormalizerBase {
 	// mapping of identifiers to placeholders
 	public static var idMap(default, null) = new Map<String, String>();
 

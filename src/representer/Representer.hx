@@ -3,7 +3,7 @@ package representer;
 import haxe.io.Path;
 import sys.io.File;
 import representer.normalizers.Normalizer;
-import representer.normalizers.Identifiers;
+import representer.normalizers.IdentifierNormalizer;
 
 class Representer {
 	public static function main() {
@@ -46,7 +46,7 @@ class Representer {
 		File.saveContent(repDest, representation);
 
 		// write mapping
-		var mapping = haxe.Json.stringify(Identifiers.idMap, "\t");
+		var mapping = haxe.Json.stringify(IdentifierNormalizer.idMap, "\t");
 		File.saveContent(mapDest, mapping);
 	}
 
